@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가계부 - 스마트 금융 관리</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-wallet"></i> 스마트 가계부</h1>
+            <p class="subtitle">지출과 수입을 한눈에 관리하세요</p>
+        </header>
+
+        <section class="summary-cards">
+            <div class="card balance">
+                <h3>현재 잔액</h3>
+                <p id="balance">₩ 0</p>
+            </div>
+            <div class="card income">
+                <h3>총 수입</h3>
+                <p id="total-income">₩ 0</p>
+            </div>
+            <div class="card expense">
+                <h3>총 지출</h3>
+                <p id="total-expense">₩ 0</p>
+            </div>
+        </section>
+
+        <main class="main-content">
+            <section class="chart-section">
+                <div class="card">
+                    <h3>지출 카테고리별 비중</h3>
+                    <div class="chart-container">
+                        <canvas id="expense-chart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="transaction-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>거래 내역</h3>
+                        <button id="add-btn" class="btn-primary"><i class="fas fa-plus"></i> 추가하기</button>
+                    </div>
+                    <ul id="transaction-list" class="transaction-list">
+                        <!-- 내역이 여기에 추가됩니다 -->
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for adding transaction -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>거래 추가</h2>
+            <form id="transaction-form">
+                <div class="form-group">
+                    <label for="text">내용</label>
+                    <input type="text" id="text" placeholder="예: 점심 식사, 급여..." required>
+                </div>
+                <div class="form-group">
+                    <label for="amount">금액 (수입은 +, 지출은 -)</label>
+                    <input type="number" id="amount" placeholder="예: -10000, 50000" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">카테고리</label>
+                    <select id="category" required>
+                        <option value="식비">식비</option>
+                        <option value="교통">교통</option>
+                        <option value="쇼핑">쇼핑</option>
+                        <option value="의료">의료</option>
+                        <option value="수입">수입</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-block">추가</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
