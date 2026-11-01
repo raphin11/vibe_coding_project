@@ -7,8 +7,21 @@
     --text-main: #333333;
     --text-muted: #777777;
     --border-color: #eeeeee;
+    --tag-bg: #f1f3f5;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     --border-radius: 12px;
+    color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+    --bg-color: #171a21;
+    --card-bg: #222731;
+    --text-main: #e8ebf0;
+    --text-muted: #a7afbd;
+    --border-color: #363d49;
+    --tag-bg: #343c49;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    color-scheme: dark;
 }
 
 * {
@@ -31,6 +44,7 @@ body {
 }
 
 header {
+    position: relative;
     text-align: center;
     margin-bottom: 40px;
 }
@@ -43,6 +57,31 @@ header h1 {
 
 header .subtitle {
     color: var(--text-muted);
+}
+
+.theme-toggle {
+    position: absolute;
+    top: 8px;
+    right: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--text-main);
+    font: inherit;
+    cursor: pointer;
+}
+
+.theme-toggle:hover {
+    border-color: var(--primary);
+}
+
+.theme-toggle:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
 }
 
 .summary-cards {
@@ -134,7 +173,7 @@ header .subtitle {
 .transaction-info span {
     font-size: 0.85rem;
     color: var(--text-muted);
-    background: #f1f3f5;
+    background: var(--tag-bg);
     padding: 2px 8px;
     border-radius: 4px;
 }
@@ -208,6 +247,8 @@ header .subtitle {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     font-family: inherit;
+    background-color: var(--card-bg);
+    color: var(--text-main);
 }
 
 .btn-block {
@@ -227,4 +268,16 @@ header .subtitle {
     position: relative;
     height: 300px;
     width: 100%;
+}
+
+@media (max-width: 600px) {
+    header {
+        padding-top: 52px;
+    }
+
+    .theme-toggle {
+        top: 0;
+        right: 50%;
+        transform: translateX(50%);
+    }
 }

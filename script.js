@@ -10,10 +10,26 @@ const category = document.getElementById('category');
 const modal = document.getElementById('modal');
 const addBtn = document.getElementById('add-btn');
 const closeBtn = document.querySelector('.close-btn');
+const themeToggle = document.getElementById('theme-toggle');
 
 // State
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let myChart = null;
+const savedTheme = localStorage.getItem('theme');
+const initialTheme = savedTheme === 'dark' ? 'dark' : 'light';
+
+function applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    const isDark = theme === 'dark';
+    themeToggle.setAttribute('aria-pressed', String(isDark));
+    themeToggle.setAttribute('aria-label', `${isDark ? '라이트' : '다크'} 모드로 전환`);
+    themeToggle.innerHTML = `
+        <i class="fas fa-${isDark ? 'sun' : 'moon'}" aria-hidden="true"></i>
+        <span>${isDark ? '라이트' : '다크'} 모드</span>
+    `;
+}
+
+applyTheme(initialTheme);
 
 // Functions
 function updateValues() {
@@ -94,7 +110,10 @@ function updateChart() {
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    position: 'bottom'
+                    position: 'bottom',
+                    labels: {
+                        color: getComputedStyle(document.documentElement).getPropertyValue('--text-main').trim()
+                    }
                 }
             },
             cutout: '70%'
@@ -148,6 +167,12 @@ form.addEventListener('submit', (e) => {
 
 addBtn.onclick = () => modal.style.display = 'block';
 closeBtn.onclick = () => modal.style.display = 'none';
+themeToggle.addEventListener('click', () => {
+    const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(nextTheme);
+    localStorage.setItem('theme', nextTheme);
+    updateChart();
+});
 window.onclick = (e) => {
     if (e.target == modal) modal.style.display = 'none';
 };
