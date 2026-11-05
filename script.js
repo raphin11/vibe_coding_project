@@ -179,3 +179,71 @@ window.onclick = (e) => {
 
 // Initial Call
 init();
+
+// Partnership Form (Formspree)
+const partnershipForm = document.getElementById('partnership-form');
+const contactSubmitBtn = document.getElementById('contact-submit-btn');
+const contactStatusMessage = document.getElementById('contact-status-message');
+const contactSuccessBox = document.getElementById('contact-success-box');
+const btnResetContact = document.getElementById('btn-reset-contact');
+
+if (partnershipForm) {
+    partnershipForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        if (!partnershipForm.checkValidity()) {
+            partnershipForm.reportValidity();
+            return;
+        }
+
+        contactSubmitBtn.disabled = true;
+        contactSubmitBtn.innerHTML = `<span class="spinner"></span> <span>전송 중...</span>`;
+        contactStatusMessage.style.display = 'none';
+
+        const formData = new FormData(partnershipForm);
+
+        try {
+            const response = await fetch(partnershipForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                partnershipForm.reset();
+                partnershipForm.style.display = 'none';
+                contactSuccessBox.style.display = 'block';
+            } else {
+                const data = await response.json();
+                let errMsg = '문의 전송 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+                if (data && data.errors && data.errors.length > 0) {
+                    errMsg = data.errors.map(err => err.message).join(', ');
+                }
+                showContactError(errMsg);
+            }
+        } catch (error) {
+            console.error('Form submission error:', error);
+            showContactError('네트워크 오류가 발생했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.');
+        } finally {
+            contactSubmitBtn.disabled = false;
+            contactSubmitBtn.innerHTML = `<i class="fas fa-paper-plane"></i> <span>문의 보내기</span>`;
+        }
+    });
+
+    function showContactError(msg) {
+        contactStatusMessage.textContent = msg;
+        contactStatusMessage.className = 'status-message error';
+        contactStatusMessage.style.display = 'block';
+        contactStatusMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    if (btnResetContact) {
+        btnResetContact.addEventListener('click', () => {
+            contactSuccessBox.style.display = 'none';
+            partnershipForm.style.display = 'block';
+            contactStatusMessage.style.display = 'none';
+        });
+    }
+}
